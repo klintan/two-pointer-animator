@@ -77,7 +77,7 @@ def main(arr):
 
         while l <= r:
             file_num += 1
-            animate(arr, ("r", r), ("l", l), file_num)
+            animate(arr, ("right", r), ("left", l), file_num)
 
             if arr[l] + arr[r] == target:
                 return [l + 1, r + 1]
@@ -87,13 +87,33 @@ def main(arr):
             else:
                 l += 1
 
-            print(r, l)
-
         file_num += 1
-        animate(arr, ("r", r), ("l", l), file_num)
-
+        animate(arr, ("right", r), ("left", l), file_num)
 
         return False
+
+    def minimum_size_subarray_sum(arr, file_num):
+        target = 7
+        # if the first number is larger or equal to target, min is 1
+        if nums[0] >= target:
+            return 1
+
+        cum_sum = left = 0
+        min_len = len(nums) + 1
+
+        for right in range(len(nums)):
+            cum_sum += nums[right]
+            file_num += 1
+            animate(arr, ("right", right), ("left", left), file_num)
+            # do not run until cum_sum is greater than or equal to target
+            while cum_sum >= target:
+                min_len = min(min_len, right - left + 1)
+                cum_sum -= nums[left]
+                left += 1
+                file_num += 1
+                animate(arr, ("right", right), ("left", left), file_num)
+
+        return min_len if min_len <= len(nums) else 0
 
     def update_rects(arr, *pointers):
         # Fill the background with white
@@ -160,8 +180,9 @@ def main(arr):
             if event.type == pygame.QUIT:
                 running = False
 
-        #move_zeroes_algorithm(arr, file_num)
-        two_sum_sorted_algorithm(arr, file_num)
+        # move_zeroes_algorithm(arr, file_num)
+        # two_sum_sorted_algorithm(arr, file_num)
+        minimum_size_subarray_sum(arr, file_num)
         # Flip the display
         pygame.display.update()
         break
@@ -170,6 +191,7 @@ def main(arr):
 
 
 if __name__ == '__main__':
-    nums = [2,7,11,15]
-    #nums = [5, 8, 13, 0, 1, 0, 3, 12]
+    # nums = [2, 7, 11, 15]
+    # nums = [5, 8, 13, 0, 1, 0, 3, 12]
+    nums = [2, 3, 1, 2, 4, 3]
     main(nums)
