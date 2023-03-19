@@ -5,8 +5,9 @@ description = ""
 authors = ["Andreas Klintberg <ankl@kth.se>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.9,<3.11"
 pygame = "^2.1.2"
+manim = "^0.15.1"
 
 [tool.poetry.dev-dependencies]
 
